@@ -6,13 +6,32 @@ const Radius = 80.0
 var Center vec2
 
 func Fragment(pos4 vec4, _ vec2, _ vec4) vec4 {
-  distToCenter := distance(Center, pos4.xy - imageDstOrigin())
+  pixelPosition := pos4.xy - imageDstOrigin()
+  distToCenter := distance(Center, pixelPosition)
   distToEdge   := distToCenter - Radius
-  factor       := clamp(-distToEdge, 0, 1)
 
-
-  if factor >= 1.0 {
+  if distToEdge < 0.0 {
     return vec4(1.0, 0.0, 0.0, 1.0)
   }
-  return vec4(0.1, 0.1, 0.1, 1.0)
+
+  origin := pixelPosition + imageSrc0Origin()
+
+  color := vec4(0.0)
+  for x := -1.0; x < 2.0; x++ {
+    for y:= -1.0; y < 2.0; y++ {
+      targetX := origin.x + x
+      targetY := origin.y + y
+      newColor := imageSrc0At(vec2(targetX, targetY))
+      if newColor.x == 0.0 && newColor.y == 0.0 && newColor.z == 0.0 {
+        color += vec4(0.1)
+      } else {
+        color += newColor
+      }
+    }
+  }
+
+  color = color / 9.0
+  color.w = 1.0
+
+  return color
 }
