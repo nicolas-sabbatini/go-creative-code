@@ -83,12 +83,12 @@ func (game *Grid) Update() {
 		for x := 0; x < game.width; x++ {
 			neighbours := game.countNeighbour(x, y)
 			position := y*game.width + x
-			if neighbours < 2 || 3 < neighbours {
-				next[position] = false
-				game.updatePixelColor(false, position)
-			} else if (neighbours == 2 && game.cells[position]) || neighbours == 3 {
+			if (neighbours == 2 && game.cells[position]) || neighbours == 3 {
 				next[position] = true
 				game.updatePixelColor(true, position)
+			} else {
+				next[position] = false
+				game.updatePixelColor(false, position)
 			}
 		}
 	}
