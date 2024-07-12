@@ -1,10 +1,10 @@
 package main
 
 import (
-	"log"
 	"math/rand"
 	"time"
 
+	"github.com/charmbracelet/log"
 	"github.com/hajimehoshi/ebiten/v2"
 )
 
@@ -47,14 +47,14 @@ func NewGrid(width, height int, density float32) Grid {
 	return newGrid
 }
 
-func (self *Grid) countNeighbour(x int, y int) int {
+func (game *Grid) countNeighbour(x int, y int) int {
 	// If is alive set to -1 to avoid skiping over the cell
-	neighbours := boolToInt(self.cells[y*self.width+x]) * -1
+	neighbours := boolToInt(game.cells[y*game.width+x]) * -1
 	for yOffset := -1; yOffset <= 1; yOffset++ {
 		for xOffset := -1; xOffset <= 1; xOffset++ {
-			x2 := (x + xOffset + self.width) % self.width
-			y2 := (y + yOffset + self.height) % self.height
-			if self.cells[y2*self.width+x2] {
+			x2 := (x + xOffset + game.width) % game.width
+			y2 := (y + yOffset + game.height) % game.height
+			if game.cells[y2*game.width+x2] {
 				neighbours++
 			}
 		}
@@ -62,51 +62,51 @@ func (self *Grid) countNeighbour(x int, y int) int {
 	return neighbours
 }
 
-func (self *Grid) updatePixelColor(status bool, position int) {
+func (game *Grid) updatePixelColor(status bool, position int) {
 	pixOffset := 4 * position
 	if status {
-		self.pixels[pixOffset] = aliveColor
-		self.pixels[pixOffset+1] = aliveColor
-		self.pixels[pixOffset+2] = aliveColor
+		game.pixels[pixOffset] = aliveColor
+		game.pixels[pixOffset+1] = aliveColor
+		game.pixels[pixOffset+2] = aliveColor
 	} else {
-		self.pixels[pixOffset] = deadColor
-		self.pixels[pixOffset+1] = deadColor
-		self.pixels[pixOffset+2] = deadColor
+		game.pixels[pixOffset] = deadColor
+		game.pixels[pixOffset+1] = deadColor
+		game.pixels[pixOffset+2] = deadColor
 	}
 	// Set the alpha chanel to MAX
-	self.pixels[pixOffset+3] = 0xff
+	game.pixels[pixOffset+3] = 0xff
 }
 
-func (self *Grid) Update() {
-	next := make([]bool, self.width*self.height)
-	for y := 0; y < self.height; y++ {
-		for x := 0; x < self.width; x++ {
-			neighbours := self.countNeighbour(x, y)
-			position := y*self.width + x
+func (game *Grid) Update() {
+	next := make([]bool, game.width*game.height)
+	for y := 0; y < game.height; y++ {
+		for x := 0; x < game.width; x++ {
+			neighbours := game.countNeighbour(x, y)
+			position := y*game.width + x
 			if neighbours < 2 || 3 < neighbours {
 				next[position] = false
-				self.updatePixelColor(false, position)
-			} else if (neighbours == 2 && self.cells[position]) || neighbours == 3 {
+				game.updatePixelColor(false, position)
+			} else if (neighbours == 2 && game.cells[position]) || neighbours == 3 {
 				next[position] = true
-				self.updatePixelColor(true, position)
+				game.updatePixelColor(true, position)
 			}
 		}
 	}
-	self.cells = next
+	game.cells = next
 }
 
-func (self *Grid) CreateCells(x int, y int, density float32, area int) {
-	if x < 0 || self.width < x || y < 0 || self.height < y {
+func (game *Grid) CreateCells(x int, y int, density float32, area int) {
+	if x < 0 || game.width < x || y < 0 || game.height < y {
 		return
 	}
 	for yOffset := -area; yOffset <= area; yOffset++ {
 		for xOffset := -area; xOffset <= area; xOffset++ {
-			x2 := (x + xOffset + self.width) % self.width
-			y2 := (y + yOffset + self.height) % self.height
-			status := self.rng.Float32() < density
-			position := y2*self.width + x2
-			self.cells[position] = status
-			self.updatePixelColor(status, position)
+			x2 := (x + xOffset + game.width) % game.width
+			y2 := (y + yOffset + game.height) % game.height
+			status := game.rng.Float32() < density
+			position := y2*game.width + x2
+			game.cells[position] = status
+			game.updatePixelColor(status, position)
 		}
 	}
 }
@@ -115,20 +115,20 @@ type Game struct {
 	grid Grid
 }
 
-func (self *Game) Update() error {
-	self.grid.Update()
+func (game *Game) Update() error {
+	game.grid.Update()
 	if ebiten.IsMouseButtonPressed(ebiten.MouseButton0) {
 		x, y := ebiten.CursorPosition()
-		self.grid.CreateCells(x, y, 0.20, 5)
+		game.grid.CreateCells(x, y, 0.20, 5)
 	}
 	return nil
 }
 
-func (self *Game) Draw(screen *ebiten.Image) {
-	screen.WritePixels(self.grid.pixels)
+func (game *Game) Draw(screen *ebiten.Image) {
+	screen.WritePixels(game.grid.pixels)
 }
 
-func (self *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
+func (game *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
 	return screenWidth, screenHeight
 }
 

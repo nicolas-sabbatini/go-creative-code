@@ -1,0 +1,18 @@
+package main
+
+//kage:unit pixels
+
+const Radius = 80.0
+var Center vec2
+
+func Fragment(pos4 vec4, _ vec2, _ vec4) vec4 {
+  distToCenter := distance(Center, pos4.xy - imageDstOrigin())
+  distToEdge   := distToCenter - Radius
+  factor       := clamp(-distToEdge, 0, 1)
+
+
+  if factor >= 1.0 {
+    return vec4(1.0, 0.0, 0.0, 1.0)
+  }
+  return vec4(0.1, 0.1, 0.1, 1.0)
+}
