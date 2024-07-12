@@ -1,0 +1,32 @@
+package main
+
+//kage:unit pixels
+
+func Fragment(pos4 vec4, _ vec2, _ vec4) vec4 {
+  Alive := vec4(1.0)
+  Dead := vec4(0.0, 0.0, 0.0, 1.0)
+
+  pixelPosition := pos4.xy - imageDstOrigin() + imageSrc0Origin()
+  isAlive := imageSrc0At(pixelPosition) == Alive 
+
+  neighbors := 0
+  if isAlive {
+    neighbors -= 1
+  }
+
+  for x := -1.0; x < 2.0; x++ {
+    for y:= -1.0; y < 2.0; y++ {
+      targetX := pixelPosition.x + x
+      targetY := pixelPosition.y + y
+      neighborStatus := imageSrc0At(vec2(targetX, targetY))
+      if neighborStatus == Alive{
+        neighbors += 1
+      }
+    }
+  }
+
+  if (neighbors == 2 && isAlive) || neighbors == 3 {
+    return Alive
+  }
+  return Dead
+}
