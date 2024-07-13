@@ -12,6 +12,7 @@ import (
 const (
 	screenWidth  = 1280 * 2
 	screenHeight = 720 * 2
+	lifeDensity  = 0.1
 )
 
 //go:embed assets/gameOfLife.kage
@@ -36,7 +37,7 @@ func newGame() Game {
 	for x := 0; x < screenWidth; x++ {
 		for y := 0; y < screenHeight; y++ {
 			position := (y*screenWidth + x) * 4
-			if rng.Float32() < 0.10 {
+			if rng.Float32() < lifeDensity {
 				cells[position] = 0xff
 				cells[position+1] = 0xff
 				cells[position+2] = 0xff
