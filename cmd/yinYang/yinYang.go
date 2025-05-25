@@ -3,10 +3,10 @@ package main
 import (
 	"github.com/charmbracelet/log"
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/nicolas-sabbatini/project-name/cmd/yin_yang/balls"
-	"github.com/nicolas-sabbatini/project-name/cmd/yin_yang/boxes"
-	"github.com/nicolas-sabbatini/project-name/cmd/yin_yang/globals"
-	"github.com/nicolas-sabbatini/project-name/cmd/yin_yang/physics"
+	"github.com/nicolas-sabbatini/go-creative-code/cmd/yinYang/balls"
+	"github.com/nicolas-sabbatini/go-creative-code/cmd/yinYang/boxes"
+	"github.com/nicolas-sabbatini/go-creative-code/cmd/yinYang/globals"
+	"github.com/nicolas-sabbatini/go-creative-code/cmd/yinYang/physics"
 )
 
 type Game struct {

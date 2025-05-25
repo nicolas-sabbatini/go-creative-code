@@ -1,8 +1,8 @@
 package physics
 
 import (
-	"github.com/nicolas-sabbatini/project-name/cmd/yin_yang/balls"
-	"github.com/nicolas-sabbatini/project-name/cmd/yin_yang/boxes"
+	"github.com/nicolas-sabbatini/go-creative-code/cmd/yinYang/balls"
+	"github.com/nicolas-sabbatini/go-creative-code/cmd/yinYang/boxes"
 )
 
 func indexToGrid(i int, gridSize int) (int, int) {

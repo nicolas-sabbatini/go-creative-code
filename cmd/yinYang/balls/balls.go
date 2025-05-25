@@ -6,7 +6,7 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/vector"
-	"github.com/nicolas-sabbatini/project-name/cmd/yin_yang/globals"
+	"github.com/nicolas-sabbatini/go-creative-code/cmd/yinYang/globals"
 )
 
 const BallSize = 10

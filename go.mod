@@ -1,4 +1,4 @@
-module github.com/nicolas-sabbatini/project-name
+module github.com/nicolas-sabbatini/go-creative-code
 
 go 1.23.0
 

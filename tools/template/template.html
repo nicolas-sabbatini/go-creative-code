@@ -50,7 +50,7 @@ license that can be found in the LICENSE file.
       const go = new Go();
       let mod, inst;
       WebAssembly.instantiateStreaming(
-        fetch("{{.BinName}}.wasm"),
+        fetch("{{.BinName}}"),
         go.importObject,
       ).then((result) => {
         mod = result.module;
@@ -71,4 +71,3 @@ license that can be found in the LICENSE file.
     <button onClick="run();" id="runButton" disabled>Run Game</button>
   </body>
 </html>
-
